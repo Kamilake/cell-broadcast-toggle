@@ -22,12 +22,17 @@
     <string name="install_step2_body">When the install finishes, return to this screen. It checks again automatically and shows how to start Shizuku.</string>
 
     <string name="start_title">Start Shizuku</string>
-    <string name="start_intro">Shizuku is installed but not running. You can start it with just your phone, no computer needed. The first time takes a few extra steps; after that, only step 4 is needed.</string>
+    <string name="start_intro">Shizuku is installed but not running. You can start it with just your phone, no computer needed. The first time takes a few extra steps; after that, only the last step is needed.</string>
     <string name="badge_once">First time only</string>
     <string name="badge_check_after_boot">Turn back on if it is off after a reboot</string>
     <string name="badge_every_boot">After every reboot</string>
     <string name="status_done">Done</string>
     <string name="status_not_done">Off</string>
+    <string name="badge_galaxy">Galaxy only</string>
+    <string name="step_blocker_title">Turn off Auto Blocker</string>
+    <string name="step_blocker_body">On Galaxy phones, Wireless debugging can\'t be used while Auto Blocker is on, so Shizuku can\'t start. Newer Galaxy phones may have it on out of the box.\n\nGo to Settings → Security and privacy → Auto Blocker and turn it off. Skip this step if it is already off.</string>
+    <string name="step_blocker_tip">Turning it back on also stops Shizuku if it is running.</string>
+    <string name="step_blocker_action">Open Auto Blocker</string>
     <string name="step_dev_title">Turn on Developer options</string>
     <string name="step_dev_body">Go to Settings → About phone → Software information and tap \"Build number\" 7 times. After entering your PIN you will see \"Developer mode has been turned on\".\n\nSkip this step if it is already on.</string>
     <string name="step_dev_action">Open About phone</string>

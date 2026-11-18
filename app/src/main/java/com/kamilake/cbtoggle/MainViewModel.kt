@@ -21,6 +21,9 @@ import rikka.shizuku.Shizuku
 
 const val SHIZUKU_PACKAGE = "moe.shizuku.privileged.api"
 
+// Samsung "Auto Blocker"; while on it blocks adb, so Shizuku cannot start.
+const val AUTO_BLOCKER_PACKAGE = "com.samsung.android.rampart"
+
 // Shizuku pushes its binder shortly after our activity comes to the foreground.
 private const val BINDER_WAIT_MS = 1000L
 
@@ -41,6 +44,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var developerOptionsEnabled by mutableStateOf(false)
         private set
     var wirelessDebuggingEnabled by mutableStateOf<Boolean?>(null)
+        private set
+    var hasAutoBlocker by mutableStateOf(false)
         private set
     var users by mutableStateOf<List<UserState>>(emptyList())
         private set
@@ -114,10 +119,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         it.query()
     }
 
-    private fun offlinePhase(): Phase = if (isShizukuInstalled()) Phase.NotRunning else Phase.NotInstalled
+    private fun offlinePhase(): Phase = if (isInstalled(SHIZUKU_PACKAGE)) Phase.NotRunning else Phase.NotInstalled
 
-    private fun isShizukuInstalled(): Boolean = try {
-        getApplication<Application>().packageManager.getPackageInfo(SHIZUKU_PACKAGE, 0)
+    private fun isInstalled(packageName: String): Boolean = try {
+        getApplication<Application>().packageManager.getPackageInfo(packageName, 0)
         true
     } catch (_: PackageManager.NameNotFoundException) {
         false
@@ -129,6 +134,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             Settings.Global.getInt(resolver, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1
         // Not a public key; null when the platform does not let us read it.
         wirelessDebuggingEnabled = runCatching { Settings.Global.getInt(resolver, "adb_wifi_enabled") == 1 }.getOrNull()
+        // Its on/off switch is not readable by regular apps, so only presence is checked.
+        hasAutoBlocker = isInstalled(AUTO_BLOCKER_PACKAGE)
     }
 
     private fun onShizukuAvailable() {

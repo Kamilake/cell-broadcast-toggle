@@ -76,7 +76,12 @@ private fun MainScreen(vm: MainViewModel) {
             when (vm.phase) {
                 Phase.Checking, Phase.Connecting -> LinearProgressIndicator(Modifier.fillMaxWidth())
                 Phase.NotInstalled -> InstallGuide(vm::retry)
-                Phase.NotRunning -> StartGuide(vm.developerOptionsEnabled, vm.wirelessDebuggingEnabled, vm::retry)
+                Phase.NotRunning -> StartGuide(
+                    autoBlocker = vm.hasAutoBlocker,
+                    developerOptions = vm.developerOptionsEnabled,
+                    wirelessDebugging = vm.wirelessDebuggingEnabled,
+                    onRecheck = vm::retry,
+                )
                 Phase.NeedPermission -> MessageCard(R.string.permission_needed, R.string.grant, vm::requestPermission)
                 Phase.PermissionDenied -> PermissionDeniedCard(vm::retry)
                 Phase.Ready -> {

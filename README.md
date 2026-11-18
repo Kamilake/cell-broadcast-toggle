@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/Kamilake/cell-broadcast-toggle/releases/latest"><img src="https://img.shields.io/badge/APK_%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-3DDC84?style=for-the-badge&logo=android&logoColor=white" width="260" alt="APK 다운로드"></a>
+  <a href="https://github.com/Kamilake/cell-broadcast-toggle/releases/latest/download/cell-broadcast-toggle.apk"><img src="https://img.shields.io/badge/APK_%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-3DDC84?style=for-the-badge&logo=android&logoColor=white" width="260" alt="APK 다운로드"></a>
 </p>
 
 # 재난문자 토글 (Cell Broadcast Toggle)
@@ -17,7 +17,7 @@
 
 ## 설치
 
-[Releases](https://github.com/Kamilake/cell-broadcast-toggle/releases/latest)에서 `cell-broadcast-toggle-*.apk`를 내려받아 설치하세요.
+위 버튼을 누르면 최신 버전 APK가 바로 내려받아집니다. 변경 사항과 이전 버전은 [Releases](https://github.com/Kamilake/cell-broadcast-toggle/releases)에 있습니다.
 
 릴리스 APK는 아래 인증서로 서명됩니다. 다른 곳에서 받은 APK라면 지문을 비교해 보세요.
 
@@ -26,7 +26,7 @@ SHA-256: b0:4c:dc:8c:a4:36:17:8c:b0:c9:c8:8b:e4:ec:45:1d:5a:d9:a4:0b:16:58:01:eb
 ```
 
 ```powershell
-apksigner verify --print-certs cell-broadcast-toggle-*.apk
+apksigner verify --print-certs cell-broadcast-toggle.apk
 ```
 
 ## 스크린샷
@@ -71,12 +71,17 @@ adb shell pm enable --user 0 com.google.android.cellbroadcastservice
 
 Shizuku가 없거나 꺼져 있으면 앱이 상황에 맞는 안내를 보여 줍니다. 다른 앱에서 작업을 마치고 돌아오면 자동으로 다시 확인합니다.
 
-| Shizuku 미설치 | Shizuku 꺼짐 (1/2) | Shizuku 꺼짐 (2/2) |
+| Shizuku 꺼짐 (1/3) | Shizuku 꺼짐 (2/3) | Shizuku 꺼짐 (3/3) |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/guide-install.png" width="240" alt="Shizuku 설치 안내"> | <img src="docs/screenshots/guide-start.png" width="240" alt="Shizuku 시작 안내 위쪽"> | <img src="docs/screenshots/guide-start-2.png" width="240" alt="Shizuku 시작 안내 아래쪽"> |
+| <img src="docs/screenshots/guide-start.png" width="240" alt="Shizuku 시작 안내: 보안 위험 자동 차단·개발자 옵션"> | <img src="docs/screenshots/guide-start-2.png" width="240" alt="Shizuku 시작 안내: 무선 디버깅·페어링"> | <img src="docs/screenshots/guide-start-3.png" width="240" alt="Shizuku 시작 안내: 시작"> |
 
+| Shizuku 미설치 |
+|:---:|
+| <img src="docs/screenshots/guide-install.png" width="240" alt="Shizuku 설치 안내"> |
+
+- **꺼짐**: 보안 위험 자동 차단(갤럭시) → 개발자 옵션 → 무선 디버깅 → 페어링 → 시작 순서로 안내합니다. 개발자 옵션과 무선 디버깅이 이미 켜져 있으면 "완료"로 표시합니다.
+  - 갤럭시의 **보안 위험 자동 차단**이 켜져 있으면 무선 디버깅이 막혀 Shizuku를 시작할 수 없고, 나중에 켜면 실행 중이던 Shizuku도 멈춥니다. 최신 갤럭시는 처음부터 켜져 있을 수 있어, 갤럭시에서는 이 단계가 맨 앞에 나오고 설정 화면으로 바로 가는 버튼을 제공합니다.
 - **미설치**: Play 스토어와 GitHub 공식 배포 페이지로 바로 이동하는 버튼을 제공합니다.
-- **꺼짐**: 개발자 옵션 → 무선 디버깅 → 페어링 → 시작 순서로 안내합니다. 개발자 옵션과 무선 디버깅이 이미 켜져 있으면 "완료"로 표시합니다.
 - **권한 거부**: Shizuku 앱의 '인증된 앱'에서 다시 허용하도록 안내합니다.
 
 검증한 기기: Galaxy Z Fold Special Edition (SM-F958N), Android 15

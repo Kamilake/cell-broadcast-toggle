@@ -53,17 +53,32 @@ fun InstallGuide(onRecheck: () -> Unit) {
 }
 
 @Composable
-fun StartGuide(developerOptions: Boolean, wirelessDebugging: Boolean?, onRecheck: () -> Unit) {
+fun StartGuide(
+    autoBlocker: Boolean,
+    developerOptions: Boolean,
+    wirelessDebugging: Boolean?,
+    onRecheck: () -> Unit,
+) {
     val context = LocalContext.current
+    var step = 0
     GuideHeader(R.string.start_title, R.string.start_intro)
-    StepCard(1, R.string.step_dev_title, R.string.badge_once, done = developerOptions) {
+    if (autoBlocker) {
+        StepCard(++step, R.string.step_blocker_title, R.string.badge_galaxy) {
+            BodyText(R.string.step_blocker_body)
+            TipText(R.string.step_blocker_tip)
+            FilledTonalButton(onClick = { context.openAutoBlocker() }) {
+                Text(stringResource(R.string.step_blocker_action))
+            }
+        }
+    }
+    StepCard(++step, R.string.step_dev_title, R.string.badge_once, done = developerOptions) {
         BodyText(R.string.step_dev_body)
         FilledTonalButton(onClick = { context.openSettings(Intent(Settings.ACTION_DEVICE_INFO_SETTINGS)) }) {
             Text(stringResource(R.string.step_dev_action))
         }
     }
     StepCard(
-        2, R.string.step_wifi_title, R.string.badge_check_after_boot,
+        ++step, R.string.step_wifi_title, R.string.badge_check_after_boot,
         done = wirelessDebugging?.let { it && developerOptions },
     ) {
         BodyText(R.string.step_wifi_body)
@@ -71,7 +86,7 @@ fun StartGuide(developerOptions: Boolean, wirelessDebugging: Boolean?, onRecheck
             Text(stringResource(R.string.open_developer_options))
         }
     }
-    StepCard(3, R.string.step_pair_title, R.string.badge_once) {
+    StepCard(++step, R.string.step_pair_title, R.string.badge_once) {
         BodyText(R.string.step_pair_body)
         TipText(R.string.step_pair_tip)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -81,7 +96,7 @@ fun StartGuide(developerOptions: Boolean, wirelessDebugging: Boolean?, onRecheck
             }
         }
     }
-    StepCard(4, R.string.step_start_title, R.string.badge_every_boot) {
+    StepCard(++step, R.string.step_start_title, R.string.badge_every_boot) {
         BodyText(R.string.step_start_body)
         FilledTonalButton(onClick = { context.openShizuku() }) { Text(stringResource(R.string.open_shizuku)) }
     }
@@ -216,6 +231,12 @@ private fun Context.openWirelessDebugging() = openSettings(
     // Undocumented extra that scrolls Settings to the "Wireless debugging" row.
     Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).putExtra(":settings:fragment_args_key", "toggle_adb_wireless"),
 )
+
+private fun Context.openAutoBlocker() {
+    // Exported settings screen; the Settings-menu aliases point at an invisible event handler instead.
+    val intent = Intent().setClassName(AUTO_BLOCKER_PACKAGE, "$AUTO_BLOCKER_PACKAGE.ui.MainSettingActivity")
+    if (!launch(intent)) openSettings(Intent(Settings.ACTION_SECURITY_SETTINGS))
+}
 
 fun Context.openShizuku() {
     packageManager.getLaunchIntentForPackage(SHIZUKU_PACKAGE)?.let { launch(it) }
