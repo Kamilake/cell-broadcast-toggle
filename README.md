@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/Kamilake/cell-broadcast-toggle/releases/latest"><img src="https://img.shields.io/badge/APK_%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-3DDC84?style=for-the-badge&logo=android&logoColor=white" height="56" alt="APK 다운로드"></a>
+  <a href="https://github.com/Kamilake/cell-broadcast-toggle/releases/latest"><img src="https://img.shields.io/badge/APK_%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-3DDC84?style=for-the-badge&logo=android&logoColor=white" width="260" alt="APK 다운로드"></a>
 </p>
 
 # 재난문자 토글 (Cell Broadcast Toggle)
