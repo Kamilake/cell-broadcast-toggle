@@ -11,6 +11,20 @@
 > 끄면 지진·대피 경보를 포함한 **모든 재난문자가 그 기기에 오지 않습니다.**
 > 평소 쓰는 휴대전화에서는 사용하지 마세요.
 
+## 설치
+
+[Releases](https://github.com/Kamilake/cell-broadcast-toggle/releases/latest)에서 `cell-broadcast-toggle-*.apk`를 내려받아 설치하세요.
+
+릴리스 APK는 아래 인증서로 서명됩니다. 다른 곳에서 받은 APK라면 지문을 비교해 보세요.
+
+```
+SHA-256: b0:4c:dc:8c:a4:36:17:8c:b0:c9:c8:8b:e4:ec:45:1d:5a:d9:a4:0b:16:58:01:eb:13:1c:c5:5a:58:f0:63:21
+```
+
+```powershell
+apksigner verify --print-certs cell-broadcast-toggle-*.apk
+```
+
 ## 스크린샷
 
 | 꺼짐 | 켜짐 | Shizuku 권한 요청 |
@@ -79,6 +93,17 @@ adb install --user 0 app/build/outputs/apk/debug/app-debug.apk
 ```
 
 `--user 0`을 빼면 듀얼 앱·업무 프로필 등 모든 사용자에게 설치됩니다.
+
+서명된 릴리스 APK를 만들려면 저장소 최상위에 `keystore.properties`를 두고 `./gradlew assembleRelease`를 실행하세요. 이 파일은 git에서 제외됩니다.
+
+```properties
+storeFile=C:/path/to/release.jks
+storePassword=...
+keyAlias=...
+keyPassword=...
+```
+
+파일이 없으면 서명되지 않은 릴리스 APK가 만들어집니다.
 
 ## 라이선스
 

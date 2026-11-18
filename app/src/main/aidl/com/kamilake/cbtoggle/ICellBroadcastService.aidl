@@ -9,4 +9,6 @@ interface ICellBroadcastService {
     List<UserState> query() = 1;
 
     void setEnabled(boolean enabled) = 2;
+
+    void watchClient(IBinder client) = 3;
 }

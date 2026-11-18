@@ -1,5 +1,6 @@
 package com.kamilake.cbtoggle
 
+import android.os.IBinder
 import kotlin.system.exitProcess
 
 val TARGET_PACKAGES = listOf(
@@ -12,6 +13,11 @@ class CellBroadcastService : ICellBroadcastService.Stub() {
 
     override fun destroy() {
         exitProcess(0)
+    }
+
+    // If the Shizuku server dies first, nobody else will stop this process.
+    override fun watchClient(client: IBinder) {
+        client.linkToDeath({ exitProcess(0) }, 0)
     }
 
     override fun query(): List<UserState> = listUsers().map { (id, name) -> queryUser(id, name) }

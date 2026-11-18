@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.os.Binder
 import android.os.IBinder
 import android.provider.Settings
 import androidx.compose.runtime.getValue
@@ -49,6 +50,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
 
     private var service: ICellBroadcastService? = null
+    private val clientToken = Binder()
 
     private val serviceArgs = Shizuku.UserServiceArgs(ComponentName(app, CellBroadcastService::class.java))
         .daemon(false)
@@ -58,7 +60,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, binder: IBinder?) {
             if (binder == null || !binder.pingBinder()) return
-            service = ICellBroadcastService.Stub.asInterface(binder)
+            service = ICellBroadcastService.Stub.asInterface(binder).also { it.watchClient(clientToken) }
             phase = Phase.Ready
             refresh()
         }
