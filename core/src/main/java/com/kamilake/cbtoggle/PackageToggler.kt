@@ -1,41 +1,33 @@
 package com.kamilake.cbtoggle
 
-import android.os.IBinder
-import kotlin.system.exitProcess
-
 val TARGET_PACKAGES = listOf(
     "com.google.android.cellbroadcastreceiver",
     "com.google.android.cellbroadcastservice",
+    // AOSP receiver, used instead of the Google one on Wear OS (e.g. Galaxy Watch).
+    "com.android.cellbroadcastreceiver",
 )
 
-/** Runs in a separate process with Shizuku's identity (shell when Shizuku is started via adb). */
-class CellBroadcastService : ICellBroadcastService.Stub() {
+class CommandResult(val code: Int, val out: String)
 
-    override fun destroy() {
-        exitProcess(0)
-    }
+/** Lists and toggles the target packages through `cmd`, run either locally or over adb. */
+class PackageToggler(private val cmd: (List<String>) -> CommandResult) {
 
-    // If the Shizuku server dies first, nobody else will stop this process.
-    override fun watchClient(client: IBinder) {
-        client.linkToDeath({ exitProcess(0) }, 0)
-    }
+    fun query(): List<UserState> = listUsers().map { (id, name) -> queryUser(id, name) }
 
-    override fun query(): List<UserState> = listUsers().map { (id, name) -> queryUser(id, name) }
-
-    override fun setEnabled(enabled: Boolean) {
+    fun setEnabled(enabled: Boolean) {
         val verb = if (enabled) "enable" else "disable-user"
         for (user in query()) {
             if (!user.accessible) continue
             TARGET_PACKAGES.forEachIndexed { i, pkg ->
                 if (user.states[i] == STATE_NOT_INSTALLED) return@forEachIndexed
-                val r = cmd("package", verb, "--user", user.userId.toString(), pkg)
+                val r = cmd(listOf("package", verb, "--user", user.userId.toString(), pkg))
                 check(r.code == 0 && "new state" in r.out) { r.out.trim() }
             }
         }
     }
 
     private fun listUsers(): List<Pair<Int, String>> =
-        USER_REGEX.findAll(cmd("package", "list", "users").out)
+        USER_REGEX.findAll(cmd(listOf("package", "list", "users")).out)
             .map { it.groupValues[1].toInt() to it.groupValues[2].trim() }
             .toList()
 
@@ -57,20 +49,12 @@ class CellBroadcastService : ICellBroadcastService.Stub() {
 
     /** Returns null when the user is not accessible (e.g. Secure Folder under shell). */
     private fun listPackages(userId: Int, filter: String): Set<String>? {
-        val r = cmd("package", "list", "packages", "--user", userId.toString(), filter)
+        val r = cmd(listOf("package", "list", "packages", "--user", userId.toString(), filter))
         if (r.code != 0 || "Exception" in r.out) return null
         return r.out.lineSequence()
             .filter { it.startsWith("package:") }
             .map { it.removePrefix("package:").trim() }
             .toSet()
-    }
-
-    private class Result(val code: Int, val out: String)
-
-    private fun cmd(vararg args: String): Result {
-        val p = ProcessBuilder("/system/bin/cmd", *args).redirectErrorStream(true).start()
-        val out = p.inputStream.bufferedReader().use { it.readText() }
-        return Result(p.waitFor(), out)
     }
 
     private companion object {

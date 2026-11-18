@@ -38,6 +38,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Lets a debug build sit next to an installed release build.
+            applicationIdSuffix = ".debug"
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -50,19 +54,18 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
-        aidl = true
-        buildConfig = true
         compose = true
     }
 }
 
 dependencies {
+    implementation(project(":core"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.shizuku.api)
-    implementation(libs.shizuku.provider)
+    implementation(libs.libadb.android)
+    implementation(libs.conscrypt.android)
+    implementation(libs.bouncycastle.pkix)
 }

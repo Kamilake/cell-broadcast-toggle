@@ -1,5 +1,6 @@
 package com.kamilake.cbtoggle
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,29 +29,47 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kamilake.cbtoggle.MainViewModel.Phase
+import com.kamilake.cbtoggle.watch.WatchActivity
 
-private val TARGET_LABELS = listOf(R.string.pkg_receiver, R.string.pkg_service)
+private val TARGET_LABELS = listOf(R.string.pkg_receiver, R.string.pkg_service, R.string.pkg_receiver)
 
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModels()
+    private var accepted by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        accepted = Disclaimer.isAccepted(this)
         setContent {
-            AppTheme { MainScreen(vm) }
+            AppTheme {
+                if (accepted) {
+                    MainScreen(vm)
+                } else {
+                    DisclaimerScreen(onAccept = ::accept, onExit = ::finish)
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        if (accepted) vm.onResume()
+    }
+
+    private fun accept() {
+        Disclaimer.accept(this)
+        accepted = true
         vm.onResume()
     }
 }
@@ -90,6 +109,25 @@ private fun MainScreen(vm: MainViewModel) {
                 }
             }
             vm.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+            if (vm.phase == Phase.Ready) WatchEntryCard()
+        }
+    }
+}
+
+@Composable
+private fun WatchEntryCard() {
+    val context = LocalContext.current
+    OutlinedCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(stringResource(R.string.open_watch), style = MaterialTheme.typography.titleMedium)
+            Text(
+                stringResource(R.string.open_watch_body),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            FilledTonalButton(onClick = { context.startActivity(Intent(context, WatchActivity::class.java)) }) {
+                Text(stringResource(R.string.watch_title))
+            }
         }
     }
 }
