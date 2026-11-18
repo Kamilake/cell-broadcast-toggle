@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">재난문자 토글</string>
+    <string name="toggle_title">재난문자 수신</string>
+    <string name="summary_on">켜짐</string>
+    <string name="summary_off">꺼짐 — 이 기기에서는 재난문자를 받지 않습니다</string>
+    <string name="summary_partial">일부만 켜짐</string>
+    <string name="summary_none">셀 방송 패키지를 찾지 못했습니다</string>
+    <string name="warning">끄면 지진·대피 경보를 포함한 모든 재난문자가 이 기기에 오지 않습니다.</string>
+    <string name="shizuku_not_running">Shizuku가 실행 중이 아닙니다. Shizuku를 시작한 뒤 다시 확인하세요.</string>
+    <string name="permission_needed">패키지 상태를 바꾸려면 Shizuku 권한이 필요합니다.</string>
+    <string name="permission_denied">Shizuku 권한이 거부됐습니다. Shizuku 앱에서 허용한 뒤 다시 확인하세요.</string>
+    <string name="grant">권한 요청</string>
+    <string name="retry">다시 확인</string>
+    <string name="user_title">사용자 %1$d · %2$s</string>
+    <string name="user_inaccessible">현재 Shizuku 권한으로는 접근할 수 없습니다</string>
+    <string name="pkg_receiver">알림 표시 앱</string>
+    <string name="pkg_service">셀 방송 서비스</string>
+    <string name="state_enabled">켜짐</string>
+    <string name="state_disabled">꺼짐</string>
+    <string name="state_not_installed">설치 안 됨</string>
+</resources>

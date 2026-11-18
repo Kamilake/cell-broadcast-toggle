@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cell Broadcast Toggle</string>
+    <string name="toggle_title">Emergency alerts</string>
+    <string name="summary_on">On</string>
+    <string name="summary_off">Off — this device will not receive emergency alerts</string>
+    <string name="summary_partial">Partially on</string>
+    <string name="summary_none">No cell broadcast packages found</string>
+    <string name="warning">Turning this off blocks all wireless emergency alerts on this device, including earthquake and evacuation alerts.</string>
+    <string name="shizuku_not_running">Shizuku is not running. Start Shizuku and try again.</string>
+    <string name="permission_needed">Shizuku permission is required to change package states.</string>
+    <string name="permission_denied">Shizuku permission was denied. Allow it in the Shizuku app, then try again.</string>
+    <string name="grant">Grant permission</string>
+    <string name="retry">Retry</string>
+    <string name="user_title">User %1$d · %2$s</string>
+    <string name="user_inaccessible">Not accessible with the current Shizuku privilege</string>
+    <string name="pkg_receiver">Alert app</string>
+    <string name="pkg_service">Cell broadcast service</string>
+    <string name="state_enabled">On</string>
+    <string name="state_disabled">Off</string>
+    <string name="state_not_installed">Not installed</string>
+</resources>
