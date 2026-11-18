@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -47,6 +48,11 @@ class MainActivity : ComponentActivity() {
             AppTheme { MainScreen(vm) }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        vm.onResume()
+    }
 }
 
 @Composable
@@ -68,10 +74,11 @@ private fun MainScreen(vm: MainViewModel) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             when (vm.phase) {
-                Phase.NoShizuku -> MessageCard(R.string.shizuku_not_running, R.string.retry, vm::retry)
+                Phase.Checking, Phase.Connecting -> LinearProgressIndicator(Modifier.fillMaxWidth())
+                Phase.NotInstalled -> InstallGuide(vm::retry)
+                Phase.NotRunning -> StartGuide(vm.developerOptionsEnabled, vm.wirelessDebuggingEnabled, vm::retry)
                 Phase.NeedPermission -> MessageCard(R.string.permission_needed, R.string.grant, vm::requestPermission)
-                Phase.PermissionDenied -> MessageCard(R.string.permission_denied, R.string.retry, vm::retry)
-                Phase.Connecting -> LinearProgressIndicator(Modifier.fillMaxWidth())
+                Phase.PermissionDenied -> PermissionDeniedCard(vm::retry)
                 Phase.Ready -> {
                     ToggleCard(vm)
                     vm.users.forEach { UserCard(it) }
@@ -88,6 +95,20 @@ private fun MessageCard(@StringRes message: Int, @StringRes action: Int, onActio
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(stringResource(message), style = MaterialTheme.typography.bodyLarge)
             FilledTonalButton(onClick = onAction) { Text(stringResource(action)) }
+        }
+    }
+}
+
+@Composable
+private fun PermissionDeniedCard(onRetry: () -> Unit) {
+    val context = LocalContext.current
+    ElevatedCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(stringResource(R.string.permission_denied), style = MaterialTheme.typography.bodyLarge)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilledTonalButton(onClick = { context.openShizuku() }) { Text(stringResource(R.string.open_shizuku)) }
+                OutlinedButton(onClick = onRetry) { Text(stringResource(R.string.retry)) }
+            }
         }
     }
 }

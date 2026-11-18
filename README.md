@@ -47,7 +47,19 @@ adb shell pm enable --user 0 com.google.android.cellbroadcastservice
 
 - Android 12 이상 (Material You 동적 색상 사용)
 - [Shizuku](https://shizuku.rikka.app/) 설치 및 실행
-  - 무선 디버깅으로 시작하면 컴퓨터 없이도 됩니다.
+  - 무선 디버깅으로 시작하면 컴퓨터 없이도 됩니다. Shizuku가 설치되지 않았거나 꺼져 있으면 앱이 단계별로 안내합니다.
+
+## Shizuku 안내 화면
+
+Shizuku가 없거나 꺼져 있으면 앱이 상황에 맞는 안내를 보여 줍니다. 다른 앱에서 작업을 마치고 돌아오면 자동으로 다시 확인합니다.
+
+| Shizuku 미설치 | Shizuku 꺼짐 (1/2) | Shizuku 꺼짐 (2/2) |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/guide-install.png" width="240" alt="Shizuku 설치 안내"> | <img src="docs/screenshots/guide-start.png" width="240" alt="Shizuku 시작 안내 위쪽"> | <img src="docs/screenshots/guide-start-2.png" width="240" alt="Shizuku 시작 안내 아래쪽"> |
+
+- **미설치**: Play 스토어와 GitHub 공식 배포 페이지로 바로 이동하는 버튼을 제공합니다.
+- **꺼짐**: 개발자 옵션 → 무선 디버깅 → 페어링 → 시작 순서로 안내합니다. 개발자 옵션과 무선 디버깅이 이미 켜져 있으면 "완료"로 표시합니다.
+- **권한 거부**: Shizuku 앱의 '인증된 앱'에서 다시 허용하도록 안내합니다.
 
 검증한 기기: Galaxy Z Fold Special Edition (SM-F958N), Android 15
 
