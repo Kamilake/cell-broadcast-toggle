@@ -4,7 +4,7 @@
 
 # 재난문자 토글 (Cell Broadcast Toggle)
 
-<img src="app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png" width="96" align="right" alt="앱 아이콘">
+<img src="core/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png" width="96" align="right" alt="앱 아이콘">
 
 [Shizuku](https://shizuku.rikka.app/)를 이용해 Android 기기의 **재난문자(셀 방송, Wireless Emergency Alerts) 수신을 스위치 하나로 끄고 켜는** 앱입니다.
 루팅이 필요 없습니다.
